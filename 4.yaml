@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+  creationTimestamp: "2025-04-11T17:34:39Z"
+  generation: 2
+  labels:
+    app: flask-application
+  name: flask-application
+  namespace: jamshid-final
+  resourceVersion: "20521579"
+  uid: f675f238-4166-4fb1-aa00-bdeb41c03673
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: flask-application
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: flask-application
+    spec:
+      containers:
+      - image: nvrbckdown/flask-app:last-practice
+        imagePullPolicy: IfNotPresent
+        name: flask-app
+        resources:
+          limits:
+            cpu: 150m
+            memory: 128Mi
+          requests:
+            cpu: 75m
+            memory: 64Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 2
+  conditions:
+  - lastTransitionTime: "2025-04-11T17:39:41Z"
+    lastUpdateTime: "2025-04-11T17:39:41Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2025-04-11T17:34:39Z"
+    lastUpdateTime: "2025-04-11T17:39:42Z"
+    message: ReplicaSet "flask-application-55cbd68f69" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 2
+  replicas: 2
+  updatedReplicas: 2
+
+
+  ____________________________________________
+
+  outpu: kubectl get pods
+NAME                                 READY   STATUS             RESTARTS         AGE
+busybox-echo                         0/1     CrashLoopBackOff   226 (2m6s ago)   18h
+flask-application-55cbd68f69-lbd5z   1/1     Running            0                18h
+flask-application-55cbd68f69-qqnjp   1/1     Running            0                18h

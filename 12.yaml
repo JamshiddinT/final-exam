@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: node-printer
+  namespace: jamshid-final
+spec:
+  schedule: "*/2 * * * *"  
+  jobTemplate:
+    spec:
+      parallelism: 5  
+      completions: 10  
+      template:
+        spec:
+          containers:
+          - name: nginx
+            image: nginx
+            command:
+              - sh
+              - -c
+              - "echo $NODE_NAME" 
+            env:
+              - name: NODE_NAME
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+          restartPolicy: OnFailure

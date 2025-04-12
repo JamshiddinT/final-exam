@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  generation: 1
+  name: final-exam
+  namespace: jamshid-final
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: jamshid-final-exam.sts404.uz
+    http:
+      paths:
+      - backend:
+          service:
+            name: final-exam-clusterip
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer: {}
